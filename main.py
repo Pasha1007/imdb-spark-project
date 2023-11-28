@@ -1,6 +1,10 @@
+from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType, StructField, StringType,IntegerType,ArrayType,BooleanType,DateType
 
-title_scheme = ([
+
+spark = SparkSession.builder.appName("my-spark-proj").getOrCreate()
+
+title_scheme = StructType([
     StructField("titleId", StringType(), True),
     StructField("ordering", IntegerType(), True),
     StructField("title", StringType(), True),
@@ -11,7 +15,7 @@ title_scheme = ([
     StructField("isOriginalTitle", BooleanType(), True),
 ])
 
-title_basics_scheme = ([
+title_basics_scheme = StructType([
     StructField("tconst", StringType(), True),
     StructField("titleType", StringType(), True),
     StructField("primaryTitle", StringType(), True),
@@ -23,20 +27,20 @@ title_basics_scheme = ([
     StructField("genres", ArrayType(StringType()), True)
 ])
 
-crew_scheme = ([
+crew_scheme = StructType([
     StructField("tconst", StringType(), True),
     StructField("directors", ArrayType(), True),
     StructField("writers", ArrayType(), True)
 ])
 
-episode_scheme = ([
+episode_scheme = StructType([
     StructField("tconst", StringType(), True),
     StructField("parentTconst", StringType(), True),
     StructField("seasonNumber", IntegerType(), True),
     StructField("eposideNumber", IntegerType(), True)
 ])
 
-principals_scheme = ([
+principals_scheme = StructType([
     StructField("tconst", StringType(), True),
     StructField("ordering", IntegerType(), True),
     StructField("nconst", StringType(), True),
@@ -45,11 +49,13 @@ principals_scheme = ([
     StructField("characters", StringType(), True),
 ])
 
-ratings_scheme = ([
-    StructField("tconst", StringType(), True)
+ratings_scheme = StructType([
+    StructField("tconst", StringType(), True),
+    StructType("ratings", IntegerType(), True),
+    StructType("numVotes", IntegerType(), True)
 ])
 
-name_basics_scheme = ([
+name_basics_scheme = StructType([
     StructField("nconst", StringType(), True),
     StructField("primaryName", StringType(), True),
     StructField("birthYear", DateType(), True),
@@ -57,3 +63,5 @@ name_basics_scheme = ([
     StructField("primaryProfession", ArrayType(), True),
     StructField("knownForTitles", ArrayType(), True)
 ])
+
+
